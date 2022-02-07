@@ -20,7 +20,7 @@ const rplybtn = document.getElementById('replay-button');
 /*-------------------------------- Variables --------------------------------*/
 
 // 1) Define the required variables used to track the state of the game:
-let gameboard, turn, winner;
+let boardArr, turn, winner;
 
 /*-------------------------------- Constants --------------------------------*/
 
@@ -64,7 +64,7 @@ function render() {
       sqrsArr[idx].textContent = '';
       sqrsArr[idx].style.color = '';
       sqrsArr[idx].style.background = '';
-    }
+    };
 
     if (sqr === 1) {
       sqrsArr[idx].textContent = 'X';
@@ -82,14 +82,32 @@ function render() {
     // If winner is equal to 'T' (tie), render a tie message.
     // Otherwise, render a congratulatory message to which player has won.
     if (winner === null) {
-      msg.textContent = `It's ${turn === 1 ? 'X' : 'O'}'s turn`
+      msg.textContent = `It's ${turn === 1 ? 'X' : 'O'}'s turn`;
     } else if (winner === 'T') {
-      msg.textContent = `It's a tie!`
+      msg.textContent = `It's a tie!`;
     } else {
-      msg.textContent = `${winner === 1 ? 'X' : 'O'} has won!`
+      msg.textContent = `${winner === 1 ? 'X' : 'O'} has won!`;
     };
   });
 }
+
+// Loop through the each of the winning combination arrays defined.
+// Total up the three board positions using the three indexes in the current combo.
+// Convert the total to an absolute value (convert any negative total to positive).
+// If the total equals 3, we have a winner! Set the winner variable to the board's value at the index specified by the first index of that winning combination's array by returning that value.
+function getWinner() {
+  winningCombos.forEach(function(combo) {
+    for (i = 0; i < boardArr.length; i++) {
+      if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === 3) {
+        winner = 1;
+      } else if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === -3) {
+        winner = -1;
+      } else if (!boardArr.includes(null)) {
+        winner = 'T';
+      };
+    };
+  });
+};
 
 // 5) Handle a player clicking a square
 board.addEventListener('click', handleClick);
@@ -110,25 +128,5 @@ function handleClick(evt) {
   render();
 }
 
-// Loop through the each of the winning combination arrays defined.
-// Total up the three board positions using the three indexes in the current combo.
-// Convert the total to an absolute value (convert any negative total to positive).
-// If the total equals 3, we have a winner! Set the winner variable to the board's value at the index specified by the first index of that winning combination's array by returning that value.
-
-
-function getWinner() {
-  winningCombos.forEach(function (combo) {
-    for (i = 0; i < boardArr.length; i++) {
-      if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === 3) {
-        winner = 1;
-      } else if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === -3) {
-        winner = -1;
-      } else if (!boardArr.includes(null)) {
-        winner = 'T'
-      }
-    }
-  })
-}
-
-    // 6) Handle a player clicking the replay button
-    rplybtn.addEventListener('click', init);
+// 6) Handle a player clicking the replay button
+rplybtn.addEventListener('click', init);
