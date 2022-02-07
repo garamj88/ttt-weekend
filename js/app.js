@@ -99,9 +99,14 @@ function handleClick(evt) {
   let idxID = evt.target.id;
   let idx = idxID[idxID.length - 1];
 
+  if (boardArr[idx] !== null) {
+    return
+  }
+
   boardArr[idx] = turn;
   turn = turn * -1;
-  winner = getWinner();
+
+  getWinner();
   render();
 }
 
@@ -111,17 +116,20 @@ function handleClick(evt) {
 // If the total equals 3, we have a winner! Set the winner variable to the board's value at the index specified by the first index of that winning combination's array by returning that value.
 
 
-
 function getWinner() {
-  winner = null;
-  winningCombos.forEach(function(combo) {
-    if (boardArr[combo[0]] && boardArr[combo[0]] === boardArr[combo[1]] && boardArr[combo[0]] === boardArr[combo[2]]) {
-      winner = board[combo[0]];
-    } else {
-      return 'T';
+  winner = null
+  winningCombos.forEach(function (combo) {
+    for (i = 0; i < boardArr.length; i++) {
+      if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === 3) {
+        winner = 1;
+      } else if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === -3) {
+        winner = -1;
+      }
     }
+
   })
+  return winner;
 }
 
-  // 6) Handle a player clicking the replay button
-  rplybtn.addEventListener('click', init);
+// 6) Handle a player clicking the replay button
+rplybtn.addEventListener('click', init);
