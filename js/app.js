@@ -86,7 +86,7 @@ function render() {
     } else if (winner === 'T') {
       msg.textContent = `It's a tie!`
     } else {
-      msg.textContent = `{winner === 1 ? 'X' : 'O' has won!}`
+      msg.textContent = `${winner === 1 ? 'X' : 'O'} has won!`
     };
   });
 }
@@ -117,19 +117,18 @@ function handleClick(evt) {
 
 
 function getWinner() {
-  winner = null
   winningCombos.forEach(function (combo) {
     for (i = 0; i < boardArr.length; i++) {
       if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === 3) {
         winner = 1;
       } else if (boardArr[combo[0]] + boardArr[combo[1]] + boardArr[combo[2]] === -3) {
         winner = -1;
+      } else if (!boardArr.includes(null)) {
+        winner = 'T'
       }
     }
-
   })
-  return winner;
 }
 
-// 6) Handle a player clicking the replay button
-rplybtn.addEventListener('click', init);
+    // 6) Handle a player clicking the replay button
+    rplybtn.addEventListener('click', init);
