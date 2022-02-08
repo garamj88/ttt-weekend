@@ -81,6 +81,7 @@ function render() {
     // If winner has a value other than null (game still in progress), render whose turn it is.
     // If winner is equal to 'T' (tie), render a tie message.
     // Otherwise, render a congratulatory message to which player has won.
+    
     if (winner === null) {
       msg.textContent = `It's ${turn === 1 ? 'X' : 'O'}'s turn`;
     } else if (winner === 'T') {
@@ -95,6 +96,7 @@ function render() {
 // Total up the three board positions using the three indexes in the current combo.
 // Convert the total to an absolute value (convert any negative total to positive).
 // If the total equals 3, we have a winner! Set the winner variable to the board's value at the index specified by the first index of that winning combination's array by returning that value.
+
 function getWinner() {
   winningCombos.forEach(function(combo) {
     for (i = 0; i < boardArr.length; i++) {
@@ -114,18 +116,16 @@ board.addEventListener('click', handleClick);
 
 function handleClick(evt) {
   // Extract the index from an id assigned to the element in the HTML
-  let idxID = evt.target.id;
-  let idx = idxID[idxID.length - 1];
+  // let idxID = evt.target.id;
+  let idx = evt.target.id.replace('sq', '');
 
-  if (boardArr[idx] !== null) {
-    return
+  if (boardArr[idx] === null && winner === null) {
+    boardArr[idx] = turn;
+    turn = turn * -1;
+  
+    getWinner();
+    render();
   }
-
-  boardArr[idx] = turn;
-  turn = turn * -1;
-
-  getWinner();
-  render();
 }
 
 // 6) Handle a player clicking the replay button
